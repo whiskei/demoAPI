@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="demoapiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="owner">
+    <Key>
+      <PropertyRef Name="owner_id" />
+    </Key>
+    <Property Name="owner_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="country" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ships" Relationship="Self.ships_owners_junction" FromRole="owners" ToRole="ships" />
+  </EntityType>
+  <EntityType Name="ship">
+    <Key>
+      <PropertyRef Name="ship_id" />
+    </Key>
+    <Property Name="ship_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="model" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="color" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="owners" Relationship="Self.ships_owners_junction" FromRole="ships" ToRole="owners" />
+  </EntityType>
+  <EntityType Name="shipsview">
+    <Key>
+      <PropertyRef Name="model" />
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="model" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="color" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="ships_owners_junction">
+    <End Role="owners" Type="Self.owner" Multiplicity="*" />
+    <End Role="ships" Type="Self.ship" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="demoapiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="owners" EntityType="Self.owner" />
+    <EntitySet Name="ships" EntityType="Self.ship" />
+    <EntitySet Name="shipsviews" EntityType="Self.shipsview" />
+    <AssociationSet Name="ships_owners_junction" Association="Self.ships_owners_junction">
+      <End Role="owners" EntitySet="owners" />
+      <End Role="ships" EntitySet="ships" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
